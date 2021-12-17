@@ -1,4 +1,5 @@
 export interface AppConfig {
+    APP_PORT: number;
     DATABASE_URI: string;
     NODE_ENV: string;
     IS_PROD: boolean;
@@ -12,6 +13,7 @@ export interface AppConfig {
 }
 
 export default (): AppConfig => ({
+    APP_PORT:         3000,
     DATABASE_URI:     process.env.DATABASE_URI || "mongodb://localhost:27017/nest-boilerplate",
     NODE_ENV:         process.env.NODE_ENV || "development",
     IS_PROD:          process.env.NODE_ENV === "production",

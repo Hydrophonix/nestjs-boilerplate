@@ -10,6 +10,7 @@ export const mockConfigService: MockConfigService = {
         return this[ key ];
     },
 
+    APP_PORT:         3000,
     COOKIE_MAX_AGE:   73,
     COOKIE_SECRET:    "test secret",
     DATABASE_URI:     "test uri",

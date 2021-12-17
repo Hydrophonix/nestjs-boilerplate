@@ -16,7 +16,6 @@ import { AppConfig, getSwaggerConfig }                                  from "./
 import { AllExceptionsFilter, LoggingInterceptor, ValidationException } from "./common";
 
 declare const module: any;
-const port = 3000;
 
 (async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -26,8 +25,11 @@ const port = 3000;
         }),
     );
     const configService = app.get<ConfigService<AppConfig>>(ConfigService);
+    const port = configService.get("APP_PORT");
     const swaggerConfig = getSwaggerConfig();
     const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+
+    SwaggerModule.setup("api", app, swaggerDocument);
 
     app.register(fastifyCookie, {
         secret: configService.get("COOKIE_SECRET"),
@@ -73,8 +75,6 @@ const port = 3000;
             },
         }),
     );
-
-    SwaggerModule.setup("api", app, swaggerDocument);
 
     await app.listen(port);
 
