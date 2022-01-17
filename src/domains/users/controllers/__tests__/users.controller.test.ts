@@ -69,7 +69,6 @@ describe("users controller", () => {
             usersService.findOneByEmail.mockReturnValue(userStub);
         });
 
-
         test("should call the users service", () => {
             expect(usersService.findOneByEmail).toHaveBeenCalledWith(data.email);
             expect(usersService.create).toHaveBeenCalledWith({ ...data, password: "hashPassword" });

@@ -1,6 +1,6 @@
 // Core
 import { NestFactory }                            from "@nestjs/core";
-import { Logger, ValidationPipe }                 from "@nestjs/common";
+import { Logger }                                 from "@nestjs/common";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { ConfigService }                          from "@nestjs/config";
 import { SwaggerModule }                          from "@nestjs/swagger";
@@ -12,8 +12,8 @@ import fastifyCsrf                                from "fastify-csrf";
 import { AppModule } from "./app.module";
 
 // Instruments
-import { AppConfig, getSwaggerConfig }                                  from "./config";
-import { AllExceptionsFilter, LoggingInterceptor, ValidationException } from "./common";
+import { AppConfig, getSwaggerConfig }                                from "./config";
+import { AllExceptionsFilter, AppValidationPipe, LoggingInterceptor } from "./common";
 
 declare const module: any;
 
@@ -57,24 +57,7 @@ declare const module: any;
     app.setGlobalPrefix("api");
     app.useGlobalFilters(new AllExceptionsFilter());
     app.useGlobalInterceptors(new LoggingInterceptor());
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform:            true,
-            disableErrorMessages: true,
-            exceptionFactory:     (errors) => {
-                const validation = Object.fromEntries(
-                    errors.map(
-                        (error) => [
-                            error.property,
-                            Object.values(error.constraints),
-                        ],
-                    ),
-                );
-
-                return new ValidationException(validation);
-            },
-        }),
-    );
+    app.useGlobalPipes(AppValidationPipe);
 
     await app.listen(port);
 
