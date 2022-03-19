@@ -59,7 +59,10 @@ declare const module: any;
     app.useGlobalInterceptors(new LoggingInterceptor());
     app.useGlobalPipes(AppValidationPipe);
 
-    await app.listen(port);
+    await app.listen(
+        port,
+        "0.0.0.0", // for docker
+    );
 
     if (module.hot) {
         module.hot.accept();

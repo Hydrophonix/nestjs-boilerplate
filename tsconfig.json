@@ -12,5 +12,11 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true
-  }
+  },
+  "exclude": [
+    "test",
+    "./test",
+    "./test/**",
+    "**/*test.ts"
+  ]
 }
